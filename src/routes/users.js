@@ -169,7 +169,7 @@ router.get('/test/slow-query', async (req, res) => {
 
   try {
     // 느린 쿼리 시뮬레이션 (2.5초)
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     const durationMs = Date.now() - startTime;
 
