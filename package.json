@@ -1,0 +1,22 @@
+{
+  "name": "express-logging-example",
+  "version": "1.0.0",
+  "description": "통합 로그 포맷을 사용하는 Express.js 예시",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": ["express", "logging", "winston", "loki"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "winston": "^3.11.0",
+    "express-winston": "^4.2.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
