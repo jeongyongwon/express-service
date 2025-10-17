@@ -84,6 +84,16 @@ router.post('/', async (req, res) => {
       throw new Error('Name and email are required');
     }
 
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      logger.warn('Invalid email format', {
+        ...req.context,
+        context: { email, validation: 'email_format' }
+      });
+      throw new Error('Invalid email format');
+    }
+
     // INSERT 시뮬레이션 (32ms)
     await new Promise(resolve => setTimeout(resolve, 32));
 
