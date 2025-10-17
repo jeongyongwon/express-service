@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT) || 3000;
 
 // 로그 디렉토리 생성
 const logsDir = process.env.LOG_PATH || path.join(__dirname, '../logs');
