@@ -1,13 +1,15 @@
 {
   "name": "express-logging-example",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "통합 로그 포맷을 사용하는 Express.js 예시",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "echo \"테스트 스크립트 준비 중\" && exit 0",
+    "lint": "echo \"린트 스크립트 준비 중\" && exit 0"
   },
-  "keywords": ["express", "logging", "winston", "loki"],
+  "keywords": ["express", "logging", "winston", "loki", "monitoring", "metrics"],
   "author": "",
   "license": "MIT",
   "dependencies": {
