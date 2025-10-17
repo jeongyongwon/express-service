@@ -6,10 +6,14 @@ Node.js/Express service with winston-based structured logging
 
 - **Structured Logging**: JSON logs via winston
 - **Request Tracing**: trace_id/span_id propagation
-- **Health Monitoring**: /health endpoint
+- **Health Monitoring**: /health endpoint with DB, Redis, External API checks
 - **Rate Limiting**: IP-based rate limiting
 - **CORS Support**: Configurable origin whitelist
 - **Error Tracking**: Comprehensive error scenarios
+- **Metrics Collection**: Endpoint-level request count, error rate, response times
+- **Security**: Security headers, IP whitelist, API key validation
+- **Caching**: In-memory TTL-based cache with statistics
+- **Validation**: Centralized input validation middleware
 
 ## Quick Start
 
