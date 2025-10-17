@@ -2,9 +2,13 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+yarn.lock
 
 # Environment
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 
@@ -18,6 +22,7 @@ yarn-error.log*
 # Testing
 coverage/
 .nyc_output/
+.jest-cache/
 
 # Logs
 logs/
@@ -26,3 +31,26 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Build
+dist/
+build/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Sequelize
+migrations/*.js
+!migrations/*-skeleton.js
+
+# PM2
+.pm2/
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+docker-compose.override.yml
