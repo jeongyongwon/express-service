@@ -20,6 +20,15 @@ router.get('/:id', async (req, res) => {
   const startTime = Date.now();
   const userId = parseInt(req.params.id);
 
+  // Validation: user_id must be a valid positive integer
+  if (isNaN(userId) || userId <= 0) {
+    logger.warn('Invalid user ID provided', {
+      ...req.context,
+      context: { user_id: req.params.id, parsed_id: userId }
+    });
+    return res.status(400).json({ error: 'Invalid user ID, must be positive integer' });
+  }
+
   try {
     // 쿼리 시뮬레이션 (45ms)
     await new Promise(resolve => setTimeout(resolve, 45));
