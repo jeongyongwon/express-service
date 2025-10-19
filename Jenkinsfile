@@ -4,7 +4,7 @@ pipeline {
     tools {
         // [Jenkins 관리] > [Global Tool Configuration]에서 설정한
         // NodeJS의 'Name'과 정확히 일치해야 합니다. (예: 'NodeJS-18')
-        nodejs 'NodeJS-18'
+        nodejs 'node-18'
     }
 
     environment {
