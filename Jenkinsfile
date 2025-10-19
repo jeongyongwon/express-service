@@ -1,9 +1,15 @@
 pipeline {
     agent any
 
+    tools {
+        // [Jenkins 관리] > [Global Tool Configuration]에서 설정한
+        // NodeJS의 'Name'과 정확히 일치해야 합니다. (예: 'NodeJS-18')
+        nodejs 'NodeJS-18'
+    }
+
     environment {
         PROJECT_NAME = 'express-service'
-        NODE_VERSION = '18'
+        NODE_VERSION = '18' // 이 값은 이제 tools 지시어로 자동 관리됩니다.
         NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
     }
 
