@@ -7,6 +7,8 @@ const express = require('express');
 const logger = require('./config/logger');
 const loggingMiddleware = require('./middleware/logging');
 const usersRouter = require('./routes/users');
+const testErrorsRouter = require('./routes/test-errors');
+const { specs, swaggerUi } = require('./swagger');
 const fs = require('fs');
 const path = require('path');
 
@@ -26,17 +28,37 @@ process.env.LOG_PATH = logsDir;
 app.use(express.json());
 app.use(loggingMiddleware);
 
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Express API Documentation'
+}));
+
 // 라우트
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root endpoint
+ *     description: 애플리케이션 상태 확인
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 app.get('/', (req, res) => {
   logger.info('Root endpoint accessed', req.context);
 
   res.json({
     message: 'Express.js Logging Example',
-    status: 'healthy'
+    status: 'healthy',
+    version: '1.0.0',
+    docs: '/api-docs'
   });
 });
 
 app.use('/api/users', usersRouter);
+app.use('/api/test-errors', testErrorsRouter);
 
 // 404 핸들러
 app.use((req, res) => {

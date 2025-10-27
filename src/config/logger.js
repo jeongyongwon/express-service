@@ -4,7 +4,17 @@
  */
 
 const winston = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
 const os = require('os');
+
+// 한국 시간대로 변환하는 함수
+const getKSTTime = () => {
+  const now = new Date();
+  // UTC 시간에 9시간 더하기 (한국 시간)
+  const kstOffset = 9 * 60; // 9시간을 분으로
+  const kstTime = new Date(now.getTime() + kstOffset * 60 * 1000);
+  return kstTime.toISOString().replace('Z', '+09:00');
+};
 
 // 공통 필드 추가 포맷
 const addCommonFields = winston.format((info) => {
@@ -12,9 +22,9 @@ const addCommonFields = winston.format((info) => {
   info.environment = process.env.ENVIRONMENT || 'development';
   info.host = os.hostname();
 
-  // timestamp를 ISO 8601 UTC 형식으로
+  // timestamp를 ISO 8601 KST 형식으로 (한국 시간)
   if (!info.timestamp) {
-    info.timestamp = new Date().toISOString();
+    info.timestamp = getKSTTime();
   }
 
   // level을 대문자로 통일
@@ -29,9 +39,7 @@ const addCommonFields = winston.format((info) => {
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
-    winston.format.timestamp({
-      format: () => new Date().toISOString()
-    }),
+    // timestamp는 addCommonFields에서 KST로 추가하므로 여기서는 제거
     winston.format.errors({ stack: true }),
     addCommonFields(),
     winston.format.json()
@@ -43,19 +51,23 @@ const logger = winston.createLogger({
       format: winston.format.json()
     }),
 
-    // 파일 출력 (일반 로그)
-    new winston.transports.File({
-      filename: `${process.env.LOG_PATH || './logs'}/app.log`,
-      maxsize: 10485760, // 10MB
-      maxFiles: 5
+    // 파일 출력 (일반 로그) - 날짜별 로테이션
+    new DailyRotateFile({
+      filename: `${process.env.LOG_PATH || './logs'}/app-%DATE%.log`,
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '10m',
+      maxFiles: '30d',  // 30일치 보관
+      format: winston.format.json()
     }),
 
-    // 파일 출력 (에러 로그만)
-    new winston.transports.File({
-      filename: `${process.env.LOG_PATH || './logs'}/error.log`,
+    // 파일 출력 (에러 로그만) - 날짜별 로테이션
+    new DailyRotateFile({
+      filename: `${process.env.LOG_PATH || './logs'}/error-%DATE%.log`,
+      datePattern: 'YYYY-MM-DD',
       level: 'error',
-      maxsize: 10485760, // 10MB
-      maxFiles: 5
+      maxSize: '10m',
+      maxFiles: '30d',  // 30일치 보관
+      format: winston.format.json()
     })
   ]
 });
